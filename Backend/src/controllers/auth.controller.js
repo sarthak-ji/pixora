@@ -1,6 +1,7 @@
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { use } from "react";
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,7 @@ async function register(req, res) {
   const token = jwt.sign(
     {
       id: user._id,
+      username: user.username,
     },
     process.env.JWT_SECRET,
     {
@@ -190,6 +192,7 @@ async function login(req, res) {
   const token = jwt.sign(
     {
       id: user._id,
+      username: user.username,
     },
     process.env.JWT_SECRET,
     {
