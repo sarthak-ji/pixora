@@ -1,6 +1,7 @@
 import express from 'express'
 import authRouter from './routes/auth.route.js';
 import postRouter from './routes/post.route.js';
+import followRouter from './routes/follow.route.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(cookieParser()); // midware: 'token' ko 'cookie' me set karne ke liye
 
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/follow", followRouter);
 
 
 export default app;

@@ -1,3 +1,4 @@
+import likeModel from "../models/like.model.js";
 import postModel from "../models/post.model.js";
 
 // ImageKit SDK is used to upload images to the cloud.
@@ -95,8 +96,54 @@ async function getPostDetails(req, res) {
   });
 }
 
+async function likePost(req, res) {
+  const postId = req.params.postId;
+  const username = req.user.username;
+
+  if (!post) {
+    return res.status(404).json({
+      message: "Post not found.",
+    });
+  }
+
+  const like = await likeModel.create({
+    user: username,
+    post: postId,
+  });
+
+  return res.status(200).json({
+    message: "Post liked successfully.",
+    like,
+  });
+}
+
+async function dislikePost(req, res) {
+  const postId = req.params.postId;
+  const username = req.user.username;
+
+  const isPostAlreadyLiked = await likeModel.findOne({
+    user: username,
+    postId: postId,
+  });
+
+  if (!isPostAlreadyLiked) {
+    return res.status(200).json({
+      message: "You didn't have liked the post.",
+    });
+  }
+
+  const dislike = await likeModel.findByIdAndDelete(isPostAlreadyLiked._id);
+
+  return res.status(200).json({
+    message: "You have disliked the post successfully.",
+    dislike,
+  });
+}
+
 export default {
   createPost,
   getPost,
   getPostDetails,
+  likePost,
+  dislikePost,
 };

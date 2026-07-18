@@ -31,4 +31,18 @@ postRouter.get("/", identifyUser, postController.getPost);
 postRouter.get("/details/:postId", identifyUser, postController.getPostDetails);
 
 
+/**
+ * @route POST /api/posts/like/:postid
+ * @description like a post with the id provided in the request params. 
+ */
+postRouter.post("/like/:postId", identifyUser, postController.likePost)
+
+
+/**
+ * @route POST /api/posts/dislike/:postid
+ * @description dislike a post with the id provided in the request params. 
+ */
+postRouter.post("/dislike/:postId", identifyUser, postController.dislikePost)
+
+
 export default postRouter;

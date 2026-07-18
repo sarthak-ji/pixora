@@ -53,7 +53,7 @@ async function unfollowUser(req, res) {
   });
 
   if (!isAlreadyFollowing) {
-    return res.status(200).json9({
+    return res.status(200).json({
         message: `You are not following ${followeeUsername}`
     });
   }
