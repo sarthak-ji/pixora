@@ -1,0 +1,22 @@
+=> 4-LAYERED ARCHITECTURE (REACT):
+1. UI Layer:
+- [Iska kaam hota hai sirf UI ko dikhana bss. -> Folders: "Components" and "Pages" me likha jata hai sirf.]
+[And, error ko 'show' karna.]
+- [UI-Layer -> Hooks-Layer (communicates only with...) baaki kisi layer se isse farak nahi padta.]
+
+2. Hooks Layer: 
+- []
+
+3. State Layer: 
+- [Folder: "auth"->'auth.context.js' (..Context API)]
+
+4. API Layer:
+- [Folder: "Services"->'auth.api.js'.. this file(frontend pe) communicates with backend related to authentication only.] -----> [Frontend + Backend Communication.]
+[And, error ko 'batana' ki error ya aa raha hoga.]
+
+
+
+
+=> REMEMBER THIS: 
+- UI Layer never communicates directly with backend. [Isliye "axios.post()" Register and Login pages me nahi use karenge.]
+- Jo kuch bhi 'state layer' me create kiya hoga usko dhang se manage karte hain 'hook layer' mein.

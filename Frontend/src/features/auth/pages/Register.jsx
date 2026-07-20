@@ -5,17 +5,21 @@
 // =====================================================
 
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import "../styles/form.scss";
-import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const Register = () => {
+  const { loading, handleRegister } = useAuth();
+
   // ---------- State: form field values ----------
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   // ---------- Handler: update field on typing ----------
   const handleChange = (e) => {
@@ -26,32 +30,37 @@ const Register = () => {
   // 1. Stops the default browser reload.
   // 2. Sends the new account details to the backend. (axios)
   // 3. Logs the response (replace with redirect / toast later).
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Register:", formData);
 
-    axios
-      .post(
-        "http://localhost:3000/api/auth/register",
-        {
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        console.log(res);
-      });
+    try {
+      await handleRegister(
+        formData.username,
+        formData.email,
+        formData.password,
+      );
+      console.log("Register successful");
+
+      navigate("/"); // navigate("/"); // later if needed
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  if (loading) {
+    return (
+      <main>
+        <h1>Loading.....</h1>
+      </main>
+    );
+  }
 
   return (
     // ---------- Page wrapper: full-screen gradient background ----------
     <main className="auth-container">
-
       {/* ---------- Centered card: holds all auth UI ---------- */}
       <div className="auth-card">
-
         {/* Brand header: gradient logo + app name */}
         <div className="auth-brand">
           <div className="brand-logo">Px</div>
@@ -66,7 +75,6 @@ const Register = () => {
 
         {/* ---------- Form: username / email / password + submit ---------- */}
         <form className="auth-form" onSubmit={handleSubmit}>
-
           {/* Username input */}
           <div className="form-group">
             <label htmlFor="username">Username</label>

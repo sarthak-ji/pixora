@@ -13,7 +13,7 @@ const postRouter = express.Router();
  * POST /api/posts [protected - means jiske pass token hoga woh hi iss api ko access kar sakta hai.]
  * - req.body = { caption,image-file }
 */
-postRouter.post("/", upload.single('batman'), identifyUser, postController.createPost);
+postRouter.post("/", upload.single('Img'), identifyUser, postController.createPost);
   // req.file is the `batman` file
   // req.body will hold the text fields, if there were any
 

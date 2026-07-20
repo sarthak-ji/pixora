@@ -7,14 +7,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
 import "../styles/form.scss";
-import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const Login = () => {
+  // Warning/Error!!
+  const { loading, handleLogin } = useAuth();
+
   // ---------- State: form field values ----------
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   // ---------- Handler: update field on typing ----------
   const handleChange = (e) => {
@@ -25,31 +31,34 @@ const Login = () => {
   // 1. Stops the default browser reload.
   // 2. Sends the credentials to the backend.
   // 3. Logs the response (replace with redirect / toast later).
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Login:", formData);
 
-    axios
-      .post(
-        "http://localhost:3000/api/auth/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-        { withCredentials: true },
-      )
-      .then((res) => {
-        console.log(res);
-      });
+    try {
+      await handleLogin(formData.username, formData.password);
+      console.log("Login successful");
+
+      navigate("/"); // navigate("/"); // later if needed
+      
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  if (loading) {
+    return (
+      <main>
+        <h1>Loading.....</h1>
+      </main>
+    );
+  }
 
   return (
     // ---------- Page wrapper: full-screen gradient background ----------
     <main className="auth-container">
-
       {/* ---------- Centered card: holds all auth UI ---------- */}
       <div className="auth-card">
-
         {/* Brand header: gradient logo + app name */}
         <div className="auth-brand">
           <div className="brand-logo">Px</div>
@@ -62,21 +71,20 @@ const Login = () => {
           Sign in to continue sharing your moments.
         </p>
 
-        {/* ---------- Form: email / password + submit ---------- */}
+        {/* ---------- Form: username / password + submit ---------- */}
         <form className="auth-form" onSubmit={handleSubmit}>
-
-          {/* Email input */}
+          {/* Username input */}
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="username">Username</label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              value={formData.username}
               onChange={handleChange}
               required
-              autoComplete="email"
+              autoComplete="username"
             />
           </div>
 

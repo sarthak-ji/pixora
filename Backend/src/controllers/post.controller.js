@@ -31,7 +31,7 @@ async function createPost(req, res) {
   */
   const file = await client.files.upload({
     file: await toFile(Buffer.from(req.file.buffer), "file"), // Convert binary buffer into a File object.
-    fileName: "Black_batman", // Name of the uploaded file inside ImageKit.
+    fileName: req.file.originalname, // Name of the uploaded file inside ImageKit.
     folder: "Pixora_files", // Folder inside ImageKit dashboard.
   });
 
@@ -43,9 +43,9 @@ async function createPost(req, res) {
   |--------------------------------------------------------------------------
   */
   const post = await postModel.create({
-    caption: req.body.caption, // Caption entered by the user.
+    caption: req.body.Caption, // Caption entered by the user.
     imgURL: file.url, // URL returned by ImageKit after successful upload.
-    user: decoded.id, // Logged-in user's id obtained from JWT.
+    user: req.user.id, // Logged-in user's id obtained from JWT.
   });
 
   // Send success response to the frontend.
@@ -70,11 +70,9 @@ async function getPost(req, res) {
 
 async function getPostDetails(req, res) {
   const userId = req.user.id;
-  const postId = req.params.id;
+  const postId = req.params.postId;
 
-  const post = await postModel.findById({
-    post: postId,
-  });
+  const post = await postModel.findById(postId);
 
   if (!post) {
     return res.status(404).json({
@@ -90,8 +88,8 @@ async function getPostDetails(req, res) {
     });
   }
 
-  return res.status(200).jsno({
-    message: "Post fetched successfully.",
+  return res.status(200).json({
+    message: "Post details fetched successfully.",
     post,
   });
 }
@@ -99,6 +97,8 @@ async function getPostDetails(req, res) {
 async function likePost(req, res) {
   const postId = req.params.postId;
   const username = req.user.username;
+
+  const post = await postModel.findById(postId);
 
   if (!post) {
     return res.status(404).json({
@@ -118,13 +118,11 @@ async function likePost(req, res) {
 }
 
 async function dislikePost(req, res) {
+
   const postId = req.params.postId;
   const username = req.user.username;
 
-  const isPostAlreadyLiked = await likeModel.findOne({
-    user: username,
-    postId: postId,
-  });
+  const isPostAlreadyLiked = await likeModel.findById(postId);
 
   if (!isPostAlreadyLiked) {
     return res.status(200).json({
@@ -132,7 +130,7 @@ async function dislikePost(req, res) {
     });
   }
 
-  const dislike = await likeModel.findByIdAndDelete(isPostAlreadyLiked._id);
+  const dislike = await likeModel.findByIdAndDelete(isPostAlreadyLiked.id);
 
   return res.status(200).json({
     message: "You have disliked the post successfully.",

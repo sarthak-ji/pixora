@@ -1,7 +1,6 @@
 import userModel from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { use } from "react";
 
 /*
 |--------------------------------------------------------------------------
@@ -229,7 +228,32 @@ async function login(req, res) {
   });
 }
 
+
+async function getMe(req, res) {
+
+  const userId = req.user.id;
+
+  const user = await userModel.findById(userId);
+
+  if(!user){
+    return res.status(404).json({
+      message: "User not found"
+    });
+  }
+
+  return res.status(200).json({
+    message: "User details fetched successfully.",
+    user: {
+      username: user.username,
+      email: user.email,
+      profile_pic: user.profile_pic,
+      bio: user.bio
+    }
+  });
+}
+
 export default {
   register,
   login,
+  getMe
 };

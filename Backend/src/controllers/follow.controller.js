@@ -1,5 +1,5 @@
-import followModel from "../models/follow.model";
-import userModel from "../models/user.model";
+import followModel from "../models/follow.model.js";
+import userModel from "../models/user.model.js";
 
 async function followUser(req, res) {
   const followerUsername = req.user.username;
