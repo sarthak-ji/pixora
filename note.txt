@@ -1,14 +1,14 @@
 => 4-LAYERED ARCHITECTURE (REACT):
 1. UI Layer:
-- [Iska kaam hota hai sirf UI ko dikhana bss. -> Folders: "Components" and "Pages" me likha jata hai sirf.]
+- [Iska kaam hota hai sirf UI ko dikhana and Navigate karna bss. -> Folders: "Components" and "Pages" me likha jata hai sirf.]
 [And, error ko 'show' karna.]
 - [UI-Layer -> Hooks-Layer (communicates only with...) baaki kisi layer se isse farak nahi padta.]
 
 2. Hooks Layer: 
-- []
+- [State and API Layer ko manage karna]
 
 3. State Layer: 
-- [Folder: "auth"->'auth.context.js' (..Context API)]
+- [Folder: "auth"->'auth.context.js' (..Context API)] --- (Loading, user, Post list, and errors)
 
 4. API Layer:
 - [Folder: "Services"->'auth.api.js'.. this file(frontend pe) communicates with backend related to authentication only.] -----> [Frontend + Backend Communication.]

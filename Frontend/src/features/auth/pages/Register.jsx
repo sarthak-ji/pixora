@@ -43,6 +43,7 @@ const Register = () => {
       console.log("Register successful");
 
       navigate("/"); // navigate("/"); // later if needed
+      
     } catch (err) {
       console.error(err);
     }

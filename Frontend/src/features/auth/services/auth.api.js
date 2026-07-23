@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api/auth",
-  withCredentials: true,
+  withCredentials: true,  // means jo token cookies ke ander stored hai usse yahan pe padha jaa sake!
 });
 
 export async function register(username, email, password) {

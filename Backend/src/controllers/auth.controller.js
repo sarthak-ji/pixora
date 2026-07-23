@@ -153,7 +153,7 @@ async function login(req, res) {
       { email },
       { username },
     ],
-  });
+  }).select("+password");
 
   // User does not exist.
   if (!user) {

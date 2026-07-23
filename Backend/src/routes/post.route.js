@@ -35,14 +35,22 @@ postRouter.get("/details/:postId", identifyUser, postController.getPostDetails);
  * @route POST /api/posts/like/:postid
  * @description like a post with the id provided in the request params. 
  */
-postRouter.post("/like/:postId", identifyUser, postController.likePost)
+postRouter.post("/like/:postId", identifyUser, postController.likePost);
 
 
 /**
  * @route POST /api/posts/dislike/:postid
  * @description dislike a post with the id provided in the request params. 
  */
-postRouter.post("/dislike/:postId", identifyUser, postController.dislikePost)
+postRouter.post("/dislike/:postId", identifyUser, postController.dislikePost);
+
+
+/**
+ * @route GET /api/posts/feed
+ * @description get all the post created in the DB
+ * @access private
+ */
+postRouter.get("/feed", identifyUser, postController.getFeed);
 
 
 export default postRouter;
